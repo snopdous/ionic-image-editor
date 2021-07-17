@@ -18,7 +18,8 @@ export class FolderPage implements OnInit {
         {layer_id:1,layer_type:'image', layer_name:'image 1',frame:'assets/image/frame_2.jpg',width:'39.0625',height:'39.0625',top:'30.46875',left:'30.46875'},
         {layer_id:2,layer_type:'frame',frame:'assets/image/frame_1.png'},
         {layer_id:3,layer_type:'frame',frame:'assets/image/frame_3.png'},
-        {layer_id:4,layer_type:'text', top:'80',left:'10',font:'20',family:'san sarif',color:"green"}
+        {layer_id:4,layer_type:'text',layer_name:'text 1', top:'80',left:'10',font:'20',family:'san sarif',color:"white"},
+        {layer_id:5,layer_type:'text',layer_name:'text 2', top:'20',left:'10',font:'20',family:'san sarif',color:"white"}
       ],
     };
   imagePath: any;
@@ -26,14 +27,17 @@ export class FolderPage implements OnInit {
 
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
   }
-
   ngOnInit() { 
   }
 public message: string;
-sel_change()
+sel_change(id)
 {
-  alert(this.image_layer);
+  // alert(id)
+  // return;
+  var files = document.getElementById('image_'+id);
+  this.readURL(files,id);
 }
+
 preview(file){
   let id = this.image_layer;
   let files = file.files;
@@ -55,8 +59,17 @@ preview(file){
     file.value="";
   }
 
-  color_change()
-  {
-    this.template['layars'][3].color = this.text_color;
+  readURL(input,id) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+     reader.readAsDataURL(input.files[0]);
+     reader.onload = (_event) => { 
+      this.template['layars'][id].frame = reader.result; 
+      }
+     
+     // convert to base64 string
+
+    }
   }
 }
